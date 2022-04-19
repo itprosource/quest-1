@@ -108,8 +108,10 @@ resource "aws_alb" "application_load_balancer" {
 
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_alb.application_load_balancer.id
-  port              = "80"
+  port              = "443"
   protocol          = "HTTP"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.alb_cert.arn
 
   default_action {
     type             = "forward"
@@ -120,6 +122,13 @@ resource "aws_lb_listener" "listener" {
 resource "aws_security_group" "load_balancer_security_group" {
   vpc_id = aws_vpc.vpc.id
 
+  ingress {
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
   ingress {
     from_port        = 80
     to_port          = 80
@@ -142,7 +151,7 @@ resource "aws_security_group" "load_balancer_security_group" {
 
 resource "aws_lb_target_group" "target_group" {
   name        = "${var.name}-tg"
-  port        = 80
+  port        = 443
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = aws_vpc.vpc.id
@@ -150,7 +159,7 @@ resource "aws_lb_target_group" "target_group" {
   health_check {
     healthy_threshold   = "3"
     interval            = "300"
-    protocol            = "HTTP"
+    protocol            = "HTTPS"
     matcher             = "200"
     timeout             = "3"
     path                = "/"
