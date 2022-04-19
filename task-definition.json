@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "quest-container",
-      "image": "quest-ecr",
+      "image": "quest-ecr:latest",
       "essential": true,
       "portMappings": [
         {
