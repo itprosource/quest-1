@@ -9,5 +9,5 @@ RUN npm install
 COPY bin bin
 COPY src src
 
-EXPOSE 80
-CMD ["npm", "start"]
+EXPOSE 3000
+CMD ["npm", "start"]npm

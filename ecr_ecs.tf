@@ -53,8 +53,8 @@ resource "aws_ecs_task_definition" "aws-ecs-task" {
       "essential": true,
       "portMappings": [
         {
-          "containerPort": 80,
-          "hostPort": 80
+          "containerPort": 3000,
+          "hostPort": 3000
         }
       ],
       "cpu": 256,
