@@ -10,4 +10,5 @@ COPY bin bin
 COPY src src
 
 EXPOSE 3000
-CMD ["npm", "start"]npm
+ENV SECRET_WORD $SECRET_WORD
+CMD ["npm", "start"]

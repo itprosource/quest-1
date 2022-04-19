@@ -33,7 +33,7 @@ variable "image" {
   description = ""
   default = ""
 }
-
+/*
 variable "secret_name" {
   type = string
   description = ""
@@ -43,6 +43,6 @@ variable "secret_name" {
 variable "secret_word" {
   type = string
   description = ""
-  default = ""
   sensitive = true
 }
+*/
