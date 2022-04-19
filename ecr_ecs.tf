@@ -45,20 +45,20 @@ resource "aws_ecs_task_definition" "aws-ecs-task" {
   container_definitions = <<DEFINITION
   [
     {
-      "name": "quest",
-      "version": "1.0.0",
-      "description": "",
-      "main": "src/000.js",
-      "scripts": {
-        "start": "node src/000.js"
-      },
-      "dependencies": {
-        "express": "~4.16.3"
-      },
-      "keywords": [],
-      "author": "Rearc",
-      "license": "ISC"
-}
+      "name": "${var.name}-container",
+      "image": "quest:latest",
+      "entryPoint": [],
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "cpu": 256,
+      "memory": 512,
+      "networkMode": "awsvpc"
+    }
   ]
   DEFINITION
 
@@ -88,9 +88,8 @@ resource "aws_ecs_service" "aws-ecs-service" {
   force_new_deployment = true
 
   network_configuration {
-    subnets          = [
-      aws_subnet.private.id
-    ]
+    subnets          = aws_subnet.private.*.id
+
     assign_public_ip = true
     security_groups = [
       aws_security_group.service_security_group.id,

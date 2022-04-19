@@ -1,3 +1,16 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+  cloud {
+    organization = "athome"
+    workspaces {
+      name = "quest-1"
+    }
+  }
+}
 
 # VPC
 resource "aws_vpc" "vpc" {
@@ -11,7 +24,7 @@ resource "aws_vpc" "vpc" {
 # Public Subnets
 resource "aws_subnet" "public" {
   count = length(var.public_subnets)
-  cidr_block = elemtent(var.public_subnets,count.index)
+  cidr_block = element(var.public_subnets,count.index)
   vpc_id = aws_vpc.vpc.id
   availability_zone = element(var.azs,count.index)
 
@@ -23,7 +36,7 @@ resource "aws_subnet" "public" {
 # Private Subnets
 resource "aws_subnet" "private" {
   count = length(var.private_subnets)
-  cidr_block = elemtent(var.private_subnets,count.index)
+  cidr_block = element(var.private_subnets,count.index)
   vpc_id = aws_vpc.vpc.id
   availability_zone = element(var.azs,count.index)
 
@@ -85,9 +98,7 @@ resource "aws_alb" "application_load_balancer" {
   name               = "${var.name}-alb"
   internal           = false
   load_balancer_type = "application"
-  subnets            = [
-    aws_subnet.public.id
-  ]
+  subnets            = aws_subnet.public.*.id
   security_groups    = [aws_security_group.load_balancer_security_group.id]
 
   tags = {
