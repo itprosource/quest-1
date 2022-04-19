@@ -23,5 +23,6 @@ module "quest" {
 
   image = "quest"
 
+  secret_name = "secret-01"
 
 }
