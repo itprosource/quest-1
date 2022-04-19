@@ -102,7 +102,7 @@ resource "aws_ecs_service" "aws-ecs-service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.target_group.arn
     container_name   = "${var.name}-container"
-    container_port   = 80
+    container_port   = 3000
   }
 
   depends_on = [aws_lb_listener.listener]
