@@ -21,5 +21,7 @@ module "quest" {
     "10.0.4.0/24"
   ]
 
+  image = "quest"
+
 
 }

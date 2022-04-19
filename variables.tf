@@ -27,3 +27,9 @@ variable "azs" {
   description = ""
   default = []
 }
+
+variable "image" {
+  type = string
+  description = ""
+  default = ""
+}

@@ -1,13 +1,15 @@
 # ECR
 resource "aws_ecr_repository" "aws-ecr" {
   name = "${var.name}-ecr"
+  image_tag_mutability = "MUTABLE"
+
   tags = {
     Name        = "${var.name}-ecr"
   }
 }
 
 # ECS
-resource "aws_ecs_cluster" "aws-ecs-cluster" {
+resource "aws_ecs_cluster" "primary" {
   name = "${var.name}-cluster"
   tags = {
     Name        = "${var.name}-ecs"
@@ -46,7 +48,7 @@ resource "aws_ecs_task_definition" "aws-ecs-task" {
   [
     {
       "name": "${var.name}-container",
-      "image": "quest:latest",
+      "image": "${var.image}:latest",
       "entryPoint": [],
       "essential": true,
       "portMappings": [
@@ -80,17 +82,17 @@ data "aws_ecs_task_definition" "main" {
 
 resource "aws_ecs_service" "aws-ecs-service" {
   name                 = "${var.name}-ecs-service"
-  cluster              = aws_ecs_cluster.aws-ecs-cluster.id
-  task_definition      = "${aws_ecs_task_definition.aws-ecs-task.family}:${max(aws_ecs_task_definition.aws-ecs-task.revision, data.aws_ecs_task_definition.main.revision)}"
+  cluster              = aws_ecs_cluster.primary.id
+  task_definition = aws_ecs_task_definition.aws-ecs-task.arn
+  #task_definition      = "${aws_ecs_task_definition.aws-ecs-task.family}:${max(aws_ecs_task_definition.aws-ecs-task.revision, data.aws_ecs_task_definition.main.revision)}"
   launch_type          = "FARGATE"
   scheduling_strategy  = "REPLICA"
-  desired_count        = 1
-  force_new_deployment = true
+  desired_count        = 2
+  #force_new_deployment = true
 
   network_configuration {
     subnets          = aws_subnet.private.*.id
-
-    assign_public_ip = true
+    assign_public_ip = false
     security_groups = [
       aws_security_group.service_security_group.id,
       aws_security_group.load_balancer_security_group.id
@@ -104,6 +106,10 @@ resource "aws_ecs_service" "aws-ecs-service" {
   }
 
   depends_on = [aws_lb_listener.listener]
+
+  lifecycle {
+    ignore_changes = [task_definition, desired_count]
+  }
 }
 
 resource "aws_security_group" "service_security_group" {
