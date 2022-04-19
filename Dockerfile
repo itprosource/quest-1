@@ -1,12 +1,4 @@
-FROM node:10
+FROM httpd:2.4
 
-WORKDIR /app
-
-COPY ./package.json /app/package.json
-COPY ./bin /app/bin
-COPY ./src /app/src
-
-RUN npm install
-
+COPY index.html /var/www/html/
 EXPOSE 80
-CMD ["npm", "start"]
