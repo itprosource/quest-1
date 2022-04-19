@@ -16,7 +16,7 @@
   "cpu": "256",
   "memory": "512",
   "networkMode": "awsvpc",
-  "executionRoleArn": "arn:aws:iam::417297593891:role/quest-execution-task-role",
+  "executionRoleArn": "arn:aws:iam::328270397459:role/quest-execution-task-role",
   "requiresCompatibilities": [
     "FARGATE"
   ]
