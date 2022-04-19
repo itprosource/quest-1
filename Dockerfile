@@ -9,4 +9,4 @@ COPY src src
 RUN npm install
 
 EXPOSE 80
-CMD ["npm", "start"]
+CMD ["node", "server.js" ]
