@@ -85,7 +85,7 @@ resource "aws_route_table_association" "private_rte" {
   route_table_id = aws_route_table.rte-private.id
 }
 
-# IGW
+# IGW test
 resource "aws_internet_gateway" "int_gateway" {
   vpc_id = aws_vpc.vpc.id
 
