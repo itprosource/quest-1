@@ -30,19 +30,6 @@ variable "azs" {
 
 variable "image" {
   type = string
-  description = ""
+  description = "Name of ECR image."
   default = ""
 }
-/*
-variable "secret_name" {
-  type = string
-  description = ""
-  default = ""
-}
-
-variable "secret_word" {
-  type = string
-  description = ""
-  sensitive = true
-}
-*/
