@@ -1,3 +1,29 @@
+# Austin's Review
+
+This repository contains 4 main components:
+1. Terraform infrastructure templates
+2. Dockerfile
+3. Github Actions Workflows
+4. Quest project files
+
+### Terraform Overview
+Deploys AWS ECS Fargate cluster deploying images from ECR into VPC with ALB and highly-available public/private subnets / NAT gateway. Managed via a simple module (./module/main.tf) with remote state stored in Hashicorp Cloud workspace. Deployed via Github Actions. 
+
+### Dockerfile Overview
+Deploys Docker image deploying small web app running on Node. Pulls SECRET_WORD value from encrypted environment variable stored in Github Secrets. 
+
+### Github Actions
+Two separate workflows; begins with Terraform deployment (remote state stored in Hashicorp Cloud workspace). Successful workflow completion triggers second workflow which deploys ECR image / ECS task. 
+
+### Verification Screenshot
+
+### "Given more time, I would improve..."
+1. Multi-cloud deployment. I ran out of time to work on an Azure-based deployment - with another day or two, it could have been done. 
+2. Store the value for SECRET_WORD in AWS Secrets Manager. If we presume that this value is meant to be protected, then there are methods by which it can still be extracted directly from the container despite being stored in Github Secrets. In addition, this allows the value to be reviewed by authorized parties; by contrast, the value stored in Github Secrets cannot be retrieved. 
+3. Leverage more CI/CD security tools. There are useful integrations which can, for example, help detect possible security risks in TF code before deployment. 
+4. Clean up sections of code for efficiency. For example, work the aws_alb_listener resources into for_each-managed iterations. 
+5. Use more dynamic Terraform or Github Actions techniques to dynamically insert values in the task-definition.json file, rather than hardcode values.
+
 # A quest in the clouds
 
 ### Q. What is this quest?
