@@ -99,7 +99,7 @@ resource "aws_nat_gateway" "nat_gateway" {
     Name = var.name
   }
 
-  depends_on = [aws_internet_gateway.int_gateway]
+  depends_on = [aws_subnet.public]
 }
 
 resource "aws_eip" "nat" {
