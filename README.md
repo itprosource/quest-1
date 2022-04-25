@@ -16,6 +16,7 @@ Deploys Docker image deploying small web app running on Node. Pulls SECRET_WORD 
 Two separate workflows; begins with Terraform deployment (remote state stored in Hashicorp Cloud workspace). Successful workflow completion triggers second workflow which deploys ECR image / ECS task. 
 
 ### Verification Screenshot
+![alt text](https://github.com/itprosource/quest-1/blob/master/index.png?raw=true)
 
 ### "Given more time, I would improve..."
 1. Multi-cloud deployment. I ran out of time to work on an Azure-based deployment - with another day or two, it could have been done. 
